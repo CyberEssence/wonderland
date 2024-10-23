@@ -1,4 +1,4 @@
-Wonderland
+Wonderland (Research)
 
 The purpose of this study is to determine how much a person, in a rush of freedom and independence from surveillance, is ready to go in order to destroy the system using soft power. 
 
@@ -58,7 +58,16 @@ Next, we will break this hash into smaller components and assemble it into 128 b
 
 
 1) creation of a cryptographic system
+   - create template of crypto algorithm (c) \ x
+   - rewrite code on c++ \ in progress
+   - shrinking hash to 512 bits
+   - modify salt with RC4
+   - random_permutation(diffie_halman(sentence, g, p) + RC4(salt)))
+
 2) creating a ring3 level rootkit
+   - test ld_preload rootkit (JinX) \ in progress
+   - modify rootkit for newest linux kernel version
+   
 3) creation or modification of the BlackEnergy bootkit for GRUB
 4) the creation of the scheme that is on the picture, the so-called botnet
 5) creating a bridge between all these systems, that is, a control panel
@@ -75,13 +84,7 @@ Stage: 1 from 3
 Input: seed phrase sentence, g, p
 Output: mutationize encoded sentence
 
-sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -->
- 
-----> random permutations --> generate hash --> clean other symbols ---------->
-
-----> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p --------->
-                                                                              
- mutationize sentence (output) <-  to_ascii <- reverse num (output)   <--  
+sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> random permutations -> generate hash -> clean other symbols -> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p -> reverse num (output) -> to_ascii -> mutationize sentence (output)   
 
 
 
