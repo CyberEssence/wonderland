@@ -109,7 +109,7 @@ sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -->
 
                                                   \
                                                     #
-                                                      \----------------- tu-ru-ru i has not finished this yet
+                                                      \----------------- tu-ru-ru i have not finished this yet
 
 
                                                   
