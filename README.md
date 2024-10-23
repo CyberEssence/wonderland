@@ -75,16 +75,13 @@ Stage: 1 from 3
 Input: seed phrase sentence, g, p
 Output: mutationize encoded sentence
 
-sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) --
-                                                                            /
-                                                                           /
-       --  clean other symbols <-- generate hash <- random permutations <--
-       \
-        \
-          --> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p --
-                                                                              /
-                                                                             /
-    mutationize sentence (output) <-  to_ascii <- reverse num (output)   <--  
+sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -->
+ 
+----> random permutations --> generate hash --> clean other symbols ---------->
+
+----> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p --------->
+                                                                              
+ mutationize sentence (output) <-  to_ascii <- reverse num (output)   <--  
 
 
 
