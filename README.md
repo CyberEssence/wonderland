@@ -65,7 +65,7 @@ Next, we will break this hash into smaller components and assemble it into 128 b
    - random_permutation(diffie_halman(sentence, g, p) + RC4(salt)))
 
 2) creating a ring3 level rootkit
-   - test ld_preload rootkit (Jynx) \ in progress
+   - test ld_preload rootkit (Jinx2) \ in progress
    - modify rootkit for newest linux kernel version
    
 3) creation or modification of the BlackEnergy bootkit for GRUB
