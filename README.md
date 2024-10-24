@@ -59,10 +59,10 @@ Next, we will break this hash into smaller components and assemble it into 128 b
 
 1) creation of a cryptographic system
    - create template of crypto algorithm (c) \ x
-   - rewrite code on c++ \ in progress
-   - shrinking hash to 512 bits
-   - modify salt with RC4
-   - random_permutation(diffie_halman(sentence, g, p) + RC4(salt)))
+   - rewrite code on c++ \ x
+   - shrinking hash to 512 bits \ thinking about this problem
+   - modify salt with RC4 \ x
+   - random_permutation(diffie_halman(sentence, g, p) + RC4(salt))) \ x
 
 2) creating a ring3 level rootkit
    - test ld_preload rootkit (Jinx2) \ in progress
