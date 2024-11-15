@@ -93,6 +93,7 @@ Next, we will break this hash into smaller components and assemble it into 128 b
 Stage: 1 from 3
 
 Input: seed phrase sentence, g, p
+
 Output: mutationize encoded sentence
 
 sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> random permutations -> generate hash -> clean other symbols -> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p -> reverse num (output) -> to_ascii -> mutationize sentence (output) 
@@ -102,6 +103,7 @@ sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> r
 Stage: 1 from 2
 
 Input: ./scan.o <ip> <port>
+
 Output: port, two states - close or open
 
 Connection established through the sockets
@@ -109,6 +111,7 @@ Connection established through the sockets
 Stage: 2 from 2
 
 Input: ./scan.o <range-of-ips> <range-of-ports>
+
 Output: report of open/close ports in every ip 
 
 
