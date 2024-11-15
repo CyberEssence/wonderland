@@ -109,7 +109,7 @@ Connection established through the sockets
 Stage: 2 from 2
 
 Input: ./scan.o <range-of-ips> <range-of-ports>
-Output: report of open/close ports in every ip
+Output: report of open/close ports in every ip 
 
 
 
