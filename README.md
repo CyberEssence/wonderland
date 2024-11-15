@@ -87,7 +87,7 @@ Next, we will break this hash into smaller components and assemble it into 128 b
 8) patching of all scada systems and iots
 9) profit
 
-
+------------------------------------------------------------------------------------
 
 1. Assymetric Cryptography Cypher (Modification of Diffi-Halman algorithm)
 Stage: 1 from 3
