@@ -65,9 +65,20 @@ Next, we will break this hash into smaller components and assemble it into 128 b
    - random_permutation(diffie_halman(sentence, g, p) + RC4(salt))) \ x
 
 2) creating a ring3 level rootkit
-   - test ld_preload rootkit (Jynx2) \ in progress
+   2.1. Testing rootkits
+   - test ld_preload rootkit (Jynx2) \ in progress x
    - modify rootkit for newest linux kernel version
-   
+   2.2. Create netrunner module before rootkit
+   - scanner module
+      - scan test ports x
+      - scan all ports    
+      - brute logins/passwords, if that needs
+      - if connection was established:
+         - recon in machine
+         - stealth find processes
+         - inject to the processes x (https://github.com/W3ndige/linux-process-injection)
+         - hide injected processes 
+
 3) creation or modification of the BlackEnergy bootkit for GRUB
 4) the creation of the scheme that is on the picture, the so-called botnet
 5) creating a bridge between all these systems, that is, a control panel
@@ -84,7 +95,21 @@ Stage: 1 from 3
 Input: seed phrase sentence, g, p
 Output: mutationize encoded sentence
 
-sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> random permutations -> generate hash -> clean other symbols -> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p -> reverse num (output) -> to_ascii -> mutationize sentence (output)   
+sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> random permutations -> generate hash -> clean other symbols -> to ints (hash) -> x = nsqrt(hash) -> supertetration of g, x, p -> reverse num (output) -> to_ascii -> mutationize sentence (output) 
+
+2. Arpanet scan module (ssh, apache, nginx) 
+
+Stage: 1 from 2
+
+Input: ./scan.o <ip> <port>
+Output: port, two states - closed or opened
+
+Connection established through the sockets
+
+Stage: 2 from 2
+
+Input: ./scan.o <range-of-ips> <range-of-ports>
+Output: report of open/close ports in every ip
 
 
 
