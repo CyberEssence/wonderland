@@ -102,7 +102,7 @@ sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> r
 Stage: 1 from 2
 
 Input: ./scan.o <ip> <port>
-Output: port, two states - closed or opened
+Output: port, two states - close or open
 
 Connection established through the sockets
 
