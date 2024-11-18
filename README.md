@@ -65,6 +65,7 @@ Next, we will break this hash into smaller components and assemble it into 128 b
    - random_permutation(diffie_halman(sentence, g, p) + RC4(salt))) \ x
 
 2) creating a ring3 level rootkit
+   
    2.1. Testing rootkits
    - test ld_preload rootkit (Jynx2) \ x
    - modify rootkit for newest linux kernel version
@@ -80,13 +81,13 @@ Next, we will break this hash into smaller components and assemble it into 128 b
          - inject to the processes x (https://github.com/W3ndige/linux-process-injection)
          - hide injected processes 
 
-3) creation or modification of the BlackEnergy bootkit for GRUB
-4) the creation of the scheme that is on the picture, the so-called botnet
-5) creating a bridge between all these systems, that is, a control panel
-6) testing and debugging inside the local network
-7) launch from under the locked machines, using the protocol of the revolution in www
-8) patching of all scada systems and iots
-9) profit
+4) creation or modification of the BlackEnergy bootkit for GRUB
+5) the creation of the scheme that is on the picture, the so-called botnet
+6) creating a bridge between all these systems, that is, a control panel
+7) testing and debugging inside the local network
+8) launch from under the locked machines, using the protocol of the revolution in www
+9) patching of all scada systems and iots
+10) profit
 
 ------------------------------------------------------------------------------------
 
