@@ -66,12 +66,12 @@ Next, we will break this hash into smaller components and assemble it into 128 b
 
 2) creating a ring3 level rootkit
    2.1. Testing rootkits
-   - test ld_preload rootkit (Jynx2) \ in progress x
+   - test ld_preload rootkit (Jynx2) \ x
    - modify rootkit for newest linux kernel version
    2.2. Create netrunner module before rootkit
    - scanner module
-      - scan test ports x
-      - scan all ports    
+      - scan test ports \ x
+      - scan all ports \ in progress  
       - brute logins/passwords, if that needs
       - if connection was established:
          - recon in machine
