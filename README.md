@@ -104,7 +104,7 @@ sentence, p, g -> clean spaces -> gen_random_str (from sequence of symbols) -> r
 
 Stage: 1 from 2
 
-Input: ./scan.o <ip> <port>
+Input: ./scan.o ip port
 
 Output: port, two states - close or open
 
@@ -112,7 +112,7 @@ Connection established through the sockets
 
 Stage: 2 from 2
 
-Input: ./scan.o <range-of-ips> <range-of-ports> 
+Input: ./scan.o ip1 ip2 port 
 
 Output: report of open/close ports in every ip 
 
