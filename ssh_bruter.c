@@ -7,8 +7,8 @@ int main() {
     ssh_session my_ssh_session;
     int rc;
     char *password;
-    const char *hostname = "192.168.1.68";
-    const char *username = "vboxuser";
+    const char *hostname = "";
+    const char *username = "";
 
 
     my_ssh_session = ssh_new();
