@@ -75,7 +75,7 @@ Next, we will break this hash into smaller components and assemble it into 128 b
       - scan test ports \ x
       - scan all ports \ in progress
       - add multithreading \ x
-      - brute logins/passwords, if that needs
+      - brute logins/passwords, if that needs \ +-
       - if connection was established:
          - recon in machine
          - stealth find processes
