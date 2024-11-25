@@ -117,7 +117,28 @@ Input: ./scan.o ip1 ip2 port
 
 Output: report of open/close ports in every ip 
 
+3. Fight netrunner module (*-*)
 
+Stage: 1 from 4
+
+I was added multithreading for netrunner module, that
+allocates memory eating on the some threads, opposite
+one thread.
+
+Stage: 2 from 4
+
+SSH auth module. Then, i will add bruteforce logic, 
+which early or later, will be replaced with TCP 
+backdoor.
+
+Stage: 3 from 4
+
+Recon module. Just thinking...
+
+Stage: 4 from 4
+
+OpenMP support or other parallel calculations 
+algorihms
 
                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                           ⣶⣶⣖⣦⡶⣴⣤⡤⣄⣄⣀⣀⡀⣀⣀⣤⣶⣶⣿⣿⣿⣿⣿⣿⣿⣶⣮⣄⣀⣠⣠⣤⣤⡄⢿⡆
