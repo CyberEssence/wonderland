@@ -5,25 +5,29 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <pthread.h>
+#include <unistd.h>
 
-void scan_ssh_port_range(const char* start_ip, const char* end_ip, int port);
+#define NUM_THREADS 4 // Number of threads to use
+
 char* custom_inet_ntoa(uint32_t ip_int);
-uint32_t inet_addr(const char* ip_string);
 
-void scan_ssh_port_range(const char* start_ip, const char* end_ip, int port) {
-    uint32_t start = inet_addr(start_ip);
+typedef struct {
+    uint32_t start;
+    uint32_t end;
+    int port;
+} scan_data_t;
 
-    //free(ip_str);
-
-    uint32_t end = inet_addr(end_ip);
+void* scan_ssh_port_range_thread(void* arg) {
+    scan_data_t* data = (scan_data_t*)arg;
     
-    for (uint32_t ip = start; ip <= end; ip++) {
+    for(uint32_t ip = data->start; ip <= data->end; ip++) {
         char* ip_str = custom_inet_ntoa(ip);
         
         struct sockaddr_in addr;
         memset(&addr, 0, sizeof(addr));
         addr.sin_family = AF_INET;
-        addr.sin_port = htons(port);
+        addr.sin_port = htons(data->port);
         addr.sin_addr.s_addr = ip;
         
         int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,17 +36,53 @@ void scan_ssh_port_range(const char* start_ip, const char* end_ip, int port) {
             continue;
         }
         
+        int result = connect(sock, (struct sockaddr*)&addr, sizeof(addr));
+        if (result < 0) {
+            printf("Error connecting to IP address %s: %s\n", ip_str, strerror(errno));
+            free(ip_str);
+            close(sock);
+            continue;
+        }
+        
         if (connect(sock, (struct sockaddr*)&addr, sizeof(addr)) == 0) {
-            printf("Port %d is open on IP address %s\n", port, ip_str);
+            printf("Port %d is open on IP address %s\n", data->port, ip_str);
             fflush(stdout);
             free(ip_str); // Free the allocated string
             close(sock);
         } else {
-            printf("Port %d is closed on IP address %s\n", port, ip_str);
+            printf("Port %d is closed on IP address %s\n", data->port, ip_str);
             fflush(stdout);
             free(ip_str); // Free the allocated string
             close(sock);
         }
+    }
+    
+    pthread_exit(NULL);
+}
+
+void scan_ssh_port_range(const char* start_ip, const char* end_ip, int port) {
+    uint32_t start = inet_addr(start_ip);
+    uint32_t end = inet_addr(end_ip);
+    
+    pthread_t threads[NUM_THREADS];
+    scan_data_t thread_args[NUM_THREADS];
+
+    // Initialize thread arguments
+    uint32_t chunk_size = (end - start + NUM_THREADS - 1) / NUM_THREADS;
+    for(int i = 0; i < NUM_THREADS; i++) {
+        thread_args[i].start = start + i * chunk_size;
+        thread_args[i].end = (i == NUM_THREADS - 1) ? end : start + (i + 1) * chunk_size - 1;
+        thread_args[i].port = port;
+    }
+
+    // Create threads
+    for(int i = 0; i < NUM_THREADS; i++) {
+        pthread_create(&threads[i], NULL, scan_ssh_port_range_thread, &thread_args[i]);
+    }
+
+    // Wait for all threads to complete
+    for(int i = 0; i < NUM_THREADS; i++) {
+        pthread_join(threads[i], NULL);
     }
 }
 
@@ -66,7 +106,6 @@ char* custom_inet_ntoa(uint32_t ip_int) {
     inet_ntop(AF_INET, &addr, buffer, 16);
     return buffer;
 }
-
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
