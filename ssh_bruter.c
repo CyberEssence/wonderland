@@ -2,127 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "net/ssh.c"
 
 #define MAX_ATTEMPTS 3
 #define SLEEP_TIME 5
 
 #define MAX_USERS 100
 #define MAX_PASSWORDS 1000
-
-
-int shell_session(ssh_session session)
-{
-  ssh_channel channel;
-  int rc;
- 
-  channel = ssh_channel_new(session);
-  if (channel == NULL)
-    return SSH_ERROR;
- 
-  rc = ssh_channel_open_session(channel);
-  if (rc != SSH_OK)
-  {
-    ssh_channel_free(channel);
-    return rc;
-  }
- 
-  ssh_channel_close(channel);
-  ssh_channel_send_eof(channel);
-  ssh_channel_free(channel);
- 
-  return SSH_OK;
-}
-
-int interactive_shell_session(ssh_channel channel)
-{
-  int rc;
- 
-  rc = ssh_channel_request_pty(channel);
-  if (rc != SSH_OK) return rc;
- 
-  rc = ssh_channel_change_pty_size(channel, 80, 24);
-  if (rc != SSH_OK) return rc;
- 
-  rc = ssh_channel_request_shell(channel);
-  if (rc != SSH_OK) return rc;
- 
-  return rc;
-}
-
-int automatic_shell_session(ssh_session session, const char *username, const char *password) {
-    ssh_channel channel = NULL;
-    
-   
-    channel = ssh_channel_new(session);
-    if (channel == NULL) {
-        fprintf(stderr, "Failed to allocate channel\n");
-        return SSH_ERROR;
-    }
-
-    
-    if (ssh_channel_open_session(channel) != SSH_OK) {
-        fprintf(stderr, "Failed to open channel session\n");
-        ssh_channel_free(channel);
-        return SSH_ERROR;
-    }
-
-    
-    if (ssh_userauth_password(session, username, password) != SSH_AUTH_SUCCESS) {
-        fprintf(stderr, "Authentication failed: %s\n", ssh_get_error(session));
-        ssh_channel_close(channel);
-        ssh_channel_free(channel);
-        return SSH_ERROR;
-    }
-
-    
-    if (ssh_channel_request_pty(channel) != SSH_OK) {
-        fprintf(stderr, "Failed to request pseudo-terminal\n");
-        ssh_channel_close(channel);
-        ssh_channel_free(channel);
-        return SSH_ERROR;
-    }
-
-    
-    if (ssh_channel_change_pty_size(channel, 80, 24) != SSH_OK) {
-        fprintf(stderr, "Failed to change pty size\n");
-        ssh_channel_close(channel);
-        ssh_channel_free(channel);
-        return SSH_ERROR;
-    }
-
-   
-    if (ssh_channel_request_shell(channel) != SSH_OK) {
-        fprintf(stderr, "Failed to start shell\n");
-        ssh_channel_close(channel);
-        ssh_channel_free(channel);
-        return SSH_ERROR;
-    }
-
-    
-    char buffer[256];
-    int nbytes;
-    
-    while (ssh_channel_is_open(channel) &&
-           !ssh_channel_is_eof(channel)) {
-        nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
-        if (nbytes < 0) {
-            fprintf(stderr, "Error reading channel\n");
-            ssh_channel_close(channel);
-            ssh_channel_free(channel);
-            return SSH_ERROR;
-        }
-        
-        if (nbytes > 0) {
-            write(1, buffer, nbytes);
-        }
-    }
-
-    
-    ssh_channel_close(channel);
-    ssh_channel_free(channel);
-
-    return SSH_OK;
-}
 
 int authSSH(int maxAttempts) {
     ssh_session my_ssh_session;
@@ -159,9 +45,9 @@ int authSSH(int maxAttempts) {
     	if (rc == SSH_AUTH_SUCCESS) {
         	printf("Authentication successful!\n");
 		ssh_free(my_ssh_session);
-		        // automatic_shell_session(my_ssh_session);
-		        //interactive_shell_session(my_ssh_session);
-		        //system("/bin/bash");
+		// automatic_shell_session(my_ssh_session);
+		//interactive_shell_session(my_ssh_session);
+		//system("/bin/bash");
             	return 0;
     	} else {
 		fprintf(stderr, "Error authenticating with password: %s\\n", ssh_get_error(my_ssh_session));
@@ -182,21 +68,59 @@ int authSSH(int maxAttempts) {
 
 
 int main(int argc, char *argv[]) {
-    /*if (argc != 4) {
-        fprintf(stderr, "Использование: %s <host> <port> <users_file>\n", argv[0]);
-        return 1;
-    }*/
     
-    int result = authSSH(MAX_ATTEMPTS);
-    /*ssh_session my_ssh_session;
-    my_ssh_session = ssh_new();*/
-    if (result == 0) {
-        printf("Authentication successful. Exiting...\n");
-        exit(0);
-    } else {
-        printf("Authentication failed. Exiting with error code %d\n", result);
-        exit(1);
+    ssh_session session;
+    ssh_channel channel;
+    int rc, port = 22;
+    char buffer[1024];
+    unsigned int nbytes;
+
+    char hostname[256];
+    char username[256];
+    char *password;
+    
+    printf("Enter hostname and username: ");
+    scanf("%s %s", &hostname, &username);
+    
+    printf("Session...\n");
+    session = ssh_new();
+    if (session == NULL) exit(-1);
+
+    ssh_options_set(session, SSH_OPTIONS_HOST, hostname);
+    ssh_options_set(session, SSH_OPTIONS_PORT, &port);
+    ssh_options_set(session, SSH_OPTIONS_USER, username);
+
+    printf("Connecting...\n");
+    rc = ssh_connect(session);
+    if (rc != SSH_OK) error(session);
+
+    printf("Password Autentication...\n");
+    password = getpass("Password: ");
+    rc = ssh_userauth_password(session, NULL, password);
+    if (rc != SSH_AUTH_SUCCESS) error(session);
+
+    printf("Channel...\n");
+    channel = ssh_channel_new(session);
+    if (channel == NULL) exit(-1);
+
+    printf("Opening...\n");
+    rc = ssh_channel_open_session(channel);
+    if (rc != SSH_OK) error(session);
+
+    printf("Executing remote command...\n");
+    rc = ssh_channel_request_exec(channel, "/bin/bash -i");
+    
+    if (rc != SSH_OK) error(session);
+
+    printf("Received:\n");
+    nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
+    while (nbytes > 0) {
+        fwrite(buffer, 1, nbytes, stdout);
+        nbytes = ssh_channel_read(channel, buffer, sizeof(buffer), 0);
     }
+
+    free_channel(channel);
+    free_session(session);
    
     return 0;
 }
