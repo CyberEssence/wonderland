@@ -1,6 +1,8 @@
 #include <libssh/libssh.h>
+#include <libssh/callbacks.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void free_channel(ssh_channel channel) {
     ssh_channel_send_eof(channel);
@@ -109,11 +111,8 @@ void ssh_exec_bash(unsigned int nbytes, int rc, ssh_channel channel, ssh_session
     }
 }
 
-void ssh_opt_set(ssh_session session, int port) {
-    char hostname[256];
-    char username[256];
-    printf("Enter hostname and username: ");
-    scanf("%s %s", &hostname, &username);
+void ssh_opt_set(ssh_session session, char *hostname, char *username, int port) {
+
     ssh_options_set(session, SSH_OPTIONS_HOST, hostname);
     ssh_options_set(session, SSH_OPTIONS_PORT, &port);
     ssh_options_set(session, SSH_OPTIONS_USER, username);
