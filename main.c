@@ -7,26 +7,20 @@
 #include "net/ssh_auth.c"
 
 int main(int argc, char *argv[]) {
-    /*if (argc != 4) {
-        fprintf(stderr, "Usage: %s <hostname> <start_port> <end_port>\n", argv[0]);
-        return 1;
-    }*/
-    
-    
     
     char hostname[256];
     char username[256];
-    int start_port;
-    int end_port;
+    int startPort;
+    int endPort;
     
     printf("Enter hostname and username: ");
     scanf("%s %s", &hostname, &username);
     
     printf("Enter start port number: ");
-    scanf("%d", &start_port);
+    scanf("%d", &startPort);
 
     printf("Enter end port number: ");
-    scanf("%d", &end_port);
+    scanf("%d", &endPort);
     
 
     struct sockaddr_in addr;
@@ -62,34 +56,28 @@ int main(int argc, char *argv[]) {
     password = getpass("Password: ");
     rc = ssh_userauth_password(session, NULL, password);
     
-    
     auth(rc, session);
-
 
     // Create channel
 
     channel = ssh_channel_new(session);
 
-    create_channel(rc, channel, session);
+    createChannel(rc, channel, session);
 
 
     // Open channel
 
     rc = ssh_channel_open_session(channel);
 
-    open_channel(rc, channel, session);
-
-
+    openChannel(rc, channel, session);
 
     rc = ssh_channel_request_pty(channel);
 
-    request_pty(rc, channel, session);
-
-    
+    requestPty(rc, channel, session);
 
     rc = ssh_channel_request_shell(channel);
 
-    request_shell(rc, channel, session);
+    requestShell(rc, channel, session);
 
     while (1) {
 
@@ -102,8 +90,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-
-
     ssh_channel_close(channel);
 
     ssh_channel_free(channel);
@@ -112,10 +98,10 @@ int main(int argc, char *argv[]) {
 
     ssh_free(session);
     
-    ssh_exec_bash(nbytes, rc, channel, session, buffer);
+    sshExecBash(nbytes, rc, channel, session, buffer);
 
-    free_channel(channel);
-    free_session(session);
+    freeChannel(channel);
+    freeSession(session);
     
     return 0;
 }
