@@ -122,7 +122,7 @@ int concatenateArr(std::vector<int>& arr) {
     return num;
 }
 
-std::string xor_strings(const std::string& str1, const std::string& str2) {
+string xorStrings(const std::string& str1, const std::string& str2) {
     int len = std::max(str1.length(), str2.length());
     
     std::string result;
@@ -138,36 +138,19 @@ std::string xor_strings(const std::string& str1, const std::string& str2) {
     return result;
 }
 
-int main() {
-    int p = 3;
-    int g = 2;
-    string sentence;
-    cout << "Введите строку: ";
-    getline(cin, sentence); // Используем getline для чтения всей строки
-    
-    string hashedSentence = genHash(sentence);
+void printHashString(string hashedSentence) {
     cout << "Хеш: " << hashedSentence << endl;
-    
-    std::vector<int> asciiArray = stringToASCIIArray(hashedSentence);
-    
+}
+
+void printAsciiStringOfHash(std::vector<int> asciiArray) {
     std::cout << "ASCII codes of the string: ";
     for (int code : asciiArray) {
         std::cout << code << " ";
     }
     std::cout << std::endl;
-    unsigned dataArraySize = sizeof(asciiArray) / sizeof(int);
-    int num = concatenateArr(asciiArray);
-    
-    int x = root(num, 9);
-    
-    cout << root(num, 9);
-    
-    int superTetrationResult = power(3, power(x, 2));
-    
-    cout << "Супертетрация: " << power(3, power(x, 2)) << endl;
-    
-    vector<int> digits;
-    int temp = superTetrationResult;
+}
+
+vector<int> pushBackAndReverse(int temp, vector<int> digits) {
     while (temp > 0) {
         digits.push_back(temp % 10);
         temp /= 10;
@@ -175,24 +158,65 @@ int main() {
     
     reverse(digits.begin(), digits.end());
     
-    string result;
+    return digits;
+}
+
+string convertIntsToChars(string result, vector<int> digits) {
     for (int digit : digits) {
         result += char(digit + 97); // Преобразование чисел в символы
     }
-    
+    return result;
+}
+
+void printResult(string result) {
     cout << "Результат: " << result << endl;
+}
+
+void printCharactersSize(string characters) {
+    cout << characters.size() << endl;
+}
+
+int main() {
+    int p;
+    int g;
+    int x;
+    int num;
+    int superTetrationResult;
     
-    int j = 0;
+    unsigned dataArraySize;
+
+    vector<int> digits;
+    
+    string sentence;
+    cout << "Введите строку: ";
+    cin >> sentence; 
+    
+    cout << "Введите p: ";
+    cin >> p;
+    
+    cout << "Введите g: ";
+    cin >> g;
+    
+    superTetrationResult = power(p, power(x, g));
+    
+    string hashedSentence = genHash(sentence);
+    
+    std::vector<int> asciiArray = stringToASCIIArray(hashedSentence);
+    
+    dataArraySize = sizeof(asciiArray) / sizeof(int);
+    
+    num = concatenateArr(asciiArray);
+    
+    pushBackAndReverse(superTetrationResult, digits);
+    
+    string result;
+    convertIntsToChars(result, digits);
     
     string array = mutateAndHash(result);
     
     string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; 
     
-    cout << characters.size();
-    
     string chars = mutateAndHash(characters).substr(0, array.length());
-    
-    cout << chars << endl;
     
     string new_chars;
     
@@ -204,7 +228,6 @@ int main() {
         new_chars += mutateAndHash(array + characters);
         new_string = mutateAndHash(new_chars);
     }
-    cout << new_string.size() << endl;
     
     for (int j = 0; j <= new_string.size() / characters.size(); j++) {
         new_second_string += characters;
@@ -212,9 +235,7 @@ int main() {
     
     string new_third_string = mutateAndHash(new_second_string.substr(0, new_string.length()));
     
-    cout << new_third_string.size() << endl;
-    
-    std::string res = xor_strings(new_third_string, new_second_string);
+    std::string res = xorStrings(new_third_string, new_second_string);
     cout << mutateAndHash(res) << endl;
     
     return 0;
