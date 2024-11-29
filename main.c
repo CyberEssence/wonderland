@@ -30,12 +30,12 @@ int main(int argc, char *argv[]) {
     
 
     struct sockaddr_in addr;
-    if (initialize_socket_address(&addr, hostname) != 0) {
+    if (initializeSocketAddress(&addr, hostname) != 0) {
         fprintf(stderr, "Failed to initialize socket address.\n");
         exit(2);
     }
      
-    port_scan(&addr, start_port, end_port);
+    portScan(&addr, start_port, end_port);
 
     ssh_session session;
     ssh_channel channel;
