@@ -8,7 +8,7 @@
 #include <ctype.h>
 #include <unistd.h>
 
-int initialize_socket_address(struct sockaddr_in *addr, const char *hostname) {
+int initializeSocketAddress(struct sockaddr_in *addr, const char *hostname) {
     if (isdigit(hostname[0])) {
         addr->sin_addr.s_addr = inet_addr(hostname);
     } else {
@@ -32,7 +32,7 @@ int initialize_socket_address(struct sockaddr_in *addr, const char *hostname) {
     return 0;
 }
 
-void port_scan(struct sockaddr_in *addr, int start_port, int end_port) {
+void portScan(struct sockaddr_in *addr, int start_port, int end_port) {
     printf("Starting the portscan loop:\n");
     for (int port = start_port; port <= end_port; ++port) {
         addr->sin_port = htons(port);
