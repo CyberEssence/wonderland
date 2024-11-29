@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 
-void free_channel(ssh_channel channel) {
+void freeChannel(ssh_channel channel) {
     ssh_channel_send_eof(channel);
     ssh_channel_close(channel);
     ssh_channel_free(channel);
 }
 
-void free_session(ssh_session session) {
+void freeSession(ssh_session session) {
     ssh_disconnect(session);
     ssh_free(session);
 }
@@ -35,7 +35,7 @@ void auth(int rc, ssh_session session) {
     }
 }
 
-void create_channel(int rc, ssh_channel channel, ssh_session session) {
+void createChannel(int rc, ssh_channel channel, ssh_session session) {
     if (channel == NULL) {
 
         fprintf(stderr, "Error creating channel: %s\n", ssh_get_error(session));
@@ -49,7 +49,7 @@ void create_channel(int rc, ssh_channel channel, ssh_session session) {
     }
 }
 
-void open_channel(int rc, ssh_channel channel, ssh_session session) {
+void openChannel(int rc, ssh_channel channel, ssh_session session) {
     if (rc != SSH_OK) {
 
         fprintf(stderr, "Error opening channel: %s\n", ssh_get_error(session));
@@ -65,7 +65,7 @@ void open_channel(int rc, ssh_channel channel, ssh_session session) {
     }
 }
 
-void request_pty(int rc, ssh_channel channel, ssh_session session) {
+void requestPty(int rc, ssh_channel channel, ssh_session session) {
     if (rc != SSH_OK) {
 
         fprintf(stderr, "Error requesting pty: %s\n", ssh_get_error(session));
@@ -81,7 +81,7 @@ void request_pty(int rc, ssh_channel channel, ssh_session session) {
     }
 }
 
-void request_shell(int rc, ssh_channel channel, ssh_session session) {
+void requestShell(int rc, ssh_channel channel, ssh_session session) {
     if (rc != SSH_OK) {
 
         fprintf(stderr, "Error requesting shell: %s\n", ssh_get_error(session));
@@ -97,7 +97,7 @@ void request_shell(int rc, ssh_channel channel, ssh_session session) {
     }
 }
 
-void ssh_exec_bash(unsigned int nbytes, int rc, ssh_channel channel, ssh_session session, char buffer[]) {	
+void sshExecBash(unsigned int nbytes, int rc, ssh_channel channel, ssh_session session, char buffer[]) {	
     printf("Executing remote command...\n");
     rc = ssh_channel_request_exec(channel, "/bin/bash -i");
     
@@ -111,7 +111,7 @@ void ssh_exec_bash(unsigned int nbytes, int rc, ssh_channel channel, ssh_session
     }
 }
 
-void ssh_opt_set(ssh_session session, char *hostname, char *username, int port) {
+void sshOptSet(ssh_session session, char *hostname, char *username, int port) {
 
     ssh_options_set(session, SSH_OPTIONS_HOST, hostname);
     ssh_options_set(session, SSH_OPTIONS_PORT, &port);
