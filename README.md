@@ -1,5 +1,7 @@
 Wonderland (Research)
 
+DESTROYING APT CYBERTERRORISM (every apt, that doing some ransomware shit for everybody country will be destroyed)
+
 The purpose of this study is to determine how much a person, in a rush of freedom and independence from surveillance, is ready to go in order to destroy the system using soft power. 
 
 The second goal of the study is how critical it will be to develop a replicating virus that destroys Trojan programs, wipes out malicious machines and rolls patches on vulnerable systems.
